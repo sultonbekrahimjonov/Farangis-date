@@ -17,17 +17,23 @@ body{
     min-height:100vh;
     overflow:hidden;
 
-    background:linear-gradient(135deg,#ff9a9e,#fad0c4,#a18cd1);
+    /* WOW BACKGROUND */
+    background: radial-gradient(circle at top left,#ff9a9e,#fad0c4,#a18cd1,#2b1055);
+    animation:bgMove 10s ease-in-out infinite alternate;
     display:flex;
     justify-content:center;
     align-items:center;
 }
 
-/* floating effects */
+@keyframes bgMove{
+    0%{filter:hue-rotate(0deg);}
+    100%{filter:hue-rotate(25deg);}
+}
+
+/* floating particles */
 .heart,.dot{
     position:absolute;
     pointer-events:none;
-    opacity:0.7;
     z-index:0;
 }
 
@@ -49,17 +55,17 @@ body{
     to{transform:translateY(110vh);}
 }
 
-/* PROFILE IMAGE TOP LEFT */
+/* PROFILE IMAGE (slightly bigger left corner) */
 .profile{
     position:fixed;
     top:15px;
     left:15px;
-    width:70px;
-    height:70px;
+    width:90px;
+    height:90px;
     border-radius:50%;
     overflow:hidden;
     border:3px solid white;
-    box-shadow:0 0 15px rgba(255,255,255,0.7);
+    box-shadow:0 0 25px rgba(255,255,255,0.8);
     animation:float 4s ease-in-out infinite;
     z-index:10;
 }
@@ -72,22 +78,22 @@ body{
 
 @keyframes float{
     0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-8px);}
+    50%{transform:translateY(-10px);}
 }
 
 /* CARD */
 .card{
     position:relative;
     z-index:2;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(18px);
     padding:30px;
     border-radius:25px;
     text-align:center;
     width:90%;
     max-width:420px;
     color:white;
-    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+    box-shadow:0 15px 50px rgba(0,0,0,0.4);
 }
 
 .hidden{display:none;}
@@ -112,7 +118,7 @@ button{
     position:absolute;
 }
 
-/* MUSIC BAR */
+/* MUSIC */
 .music-bar{
     position:fixed;
     bottom:0;
@@ -134,19 +140,18 @@ button{
     padding:10px 15px;
     border-radius:10px;
     color:white;
-    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- PROFILE IMAGE (background.jpg) -->
+<!-- PROFILE IMAGE -->
 <div class="profile">
     <img src="background.jpg">
 </div>
 
-<!-- HEARTS SCRIPT -->
+<!-- FLOATING EFFECT -->
 <script>
 for(let i=0;i<25;i++){
     let el=document.createElement("div");
@@ -158,17 +163,36 @@ for(let i=0;i<25;i++){
 }
 </script>
 
-<!-- MAIN CARD -->
+<!-- PAGE 1 -->
 <div class="card" id="page1">
     <h1>Farangis ❤️</h1>
-    <p>Seni juda qadrlayman...</p>
-    <h3>Uchrashuvga chiqasanmi?</h3>
+    <p>Seni ko‘rganimdan beri bir fikr tinchlik bermaydi...</p>
+
+    <h3>Men bilan uchrashuvga chiqasanmi?</h3>
 
     <button id="yesBtn">Ha ❤️</button>
     <button id="noBtn">Yo‘q 😅</button>
 </div>
 
-<!-- MUSIC BAR -->
+<!-- PAGE 2 -->
+<div class="card hidden" id="page2">
+    <h2>Endi vaqtimizni tanlaymiz ❤️</h2>
+
+    <input type="date" id="date">
+    <input type="time" id="time">
+
+    <button onclick="finish()">Tasdiqlash ❤️</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="card hidden" id="page3">
+    <h2>Bir qaror qabul qilindi 💫</h2>
+    <p id="meetingInfo"></p>
+
+    <h3>Bu kun shunchaki uchrashuv emas… balki esda qoladigan hikoyaning boshlanishi ❤️</h3>
+</div>
+
+<!-- MUSIC -->
 <div class="music-bar">
     <div>
         🎵 Farangis uchun<br>
@@ -184,7 +208,7 @@ for(let i=0;i<25;i++){
 
 <script>
 
-// NO button runaway
+// NO button move
 const noBtn=document.getElementById("noBtn");
 
 function move(){
@@ -198,10 +222,23 @@ noBtn.addEventListener("touchstart",function(e){
     move();
 });
 
-// YES
+// YES → PAGE 2
 document.getElementById("yesBtn").onclick=()=>{
-    alert("❤️ Rahmat Farangis!");
+    document.getElementById("page1").classList.add("hidden");
+    document.getElementById("page2").classList.remove("hidden");
 };
+
+// FINISH → UNIQUE FINAL TEXT
+function finish(){
+    const d=document.getElementById("date").value;
+    const t=document.getElementById("time").value;
+
+    document.getElementById("page2").classList.add("hidden");
+    document.getElementById("page3").classList.remove("hidden");
+
+    document.getElementById("meetingInfo").innerHTML=
+    `📅 Biz <b>${d}</b> kuni, ⏰ <b>${t}</b> da uchrashamiz.`;
+}
 
 // MUSIC FIX
 function playMusic(){
