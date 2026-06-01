@@ -14,35 +14,35 @@
 
 body{
     font-family:Arial,sans-serif;
-
-    background-image: url("background.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
     min-height:100vh;
+
+    background-image:url("background.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
     display:flex;
     justify-content:center;
     align-items:center;
     overflow:hidden;
 }
 
-/* overlay */
+/* dark overlay */
 body::before{
     content:"";
     position:absolute;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.4);
+    background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.6));
     z-index:0;
 }
 
 .card{
     position:relative;
-    z-index:1;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    z-index:2;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
     padding:35px;
     border-radius:25px;
     text-align:center;
@@ -53,7 +53,7 @@ body::before{
 }
 
 h1{
-    margin-bottom:20px;
+    margin-bottom:15px;
 }
 
 p{
@@ -105,33 +105,66 @@ input{
 }
 
 @keyframes fall{
-    from{ transform:translateY(-100px); }
-    to{ transform:translateY(110vh); }
+    from{transform:translateY(-100px);}
+    to{transform:translateY(110vh);}
+}
+
+/* MUSIC BAR */
+.music-bar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:rgba(0,0,0,0.7);
+    backdrop-filter:blur(10px);
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+    z-index:999;
+}
+
+.music-bar button{
+    background:#4CAF50;
+    border:none;
+    padding:10px 16px;
+    border-radius:10px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
-<audio autoplay loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
+<!-- MUSIC PLAYER -->
+<div class="music-bar">
+    <div>
+        🎵 <b>Farangis uchun</b><br>
+        <small>Ijrochi: Sultonbek</small>
+    </div>
 
+    <button onclick="playMusic()">▶️ Play</button>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+<!-- PAGE 1 -->
 <div class="card" id="page1">
     <h1>Farangis ❤️</h1>
+    <p>Men seni juda qadrlayman va sen bilan uchrashmoqchiman.</p>
 
-    <p>
-        Men seni juda qadrlayman va sen bilan
-        ajoyib vaqt o'tkazishni xohlayman.
-    </p>
-
-    <h2>Men bilan uchrashuvga chiqasanmi? 🥰</h2>
+    <h2>Uchrashuvga chiqasanmi? 🥰</h2>
 
     <button id="yesBtn">Ha ❤️</button>
     <button id="noBtn">Yo‘q 😅</button>
 </div>
 
+<!-- PAGE 2 -->
 <div class="card hidden" id="page2">
     <h2>Uchrashuvni tanla ❤️</h2>
 
@@ -141,9 +174,9 @@ input{
     <button onclick="finish()">Tasdiqlash ❤️</button>
 </div>
 
+<!-- PAGE 3 -->
 <div class="card hidden" id="page3">
     <h1>Rahmat ❤️</h1>
-
     <p>Seni kutaman Farangis 🥰</p>
 
     <p id="meetingInfo"></p>
@@ -151,7 +184,7 @@ input{
 
 <script>
 
-// hearts animation
+// hearts
 for(let i=0;i<25;i++){
     const heart=document.createElement("div");
     heart.className="heart";
@@ -161,7 +194,7 @@ for(let i=0;i<25;i++){
     document.body.appendChild(heart);
 }
 
-// NO button escape
+// NO button move
 const noBtn=document.getElementById("noBtn");
 
 function moveButton(){
@@ -178,7 +211,7 @@ noBtn.addEventListener("touchstart",function(e){
     moveButton();
 });
 
-// YES button
+// YES
 document.getElementById("yesBtn").addEventListener("click",function(){
     document.getElementById("page1").classList.add("hidden");
     document.getElementById("page2").classList.remove("hidden");
@@ -194,6 +227,11 @@ function finish(){
 
     document.getElementById("meetingInfo").innerHTML=
     `Uchrashuv: <b>${date}</b> soat <b>${time}</b> ❤️`;
+}
+
+// MUSIC
+function playMusic(){
+    document.getElementById("bgMusic").play();
 }
 
 </script>
