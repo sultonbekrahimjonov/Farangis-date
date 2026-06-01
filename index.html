@@ -27,13 +27,12 @@ body{
     overflow:hidden;
 }
 
-/* dark overlay */
 body::before{
     content:"";
     position:absolute;
     width:100%;
     height:100%;
-    background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.6));
+    background:rgba(0,0,0,0.5);
     z-index:0;
 }
 
@@ -52,38 +51,22 @@ body::before{
     color:white;
 }
 
-h1{
-    margin-bottom:15px;
-}
-
-p{
-    margin-bottom:15px;
-    line-height:1.6;
-}
+h1{ margin-bottom:15px; }
+p{ margin-bottom:15px; line-height:1.6; }
 
 button{
     border:none;
-    padding:14px 26px;
+    padding:14px 24px;
     border-radius:12px;
     font-size:18px;
     cursor:pointer;
     margin:10px;
 }
 
-#yesBtn{
-    background:#4CAF50;
-    color:white;
-}
+#yesBtn{ background:#4CAF50; color:white; }
+#noBtn{ background:#ff4d4d; color:white; position:absolute; }
 
-#noBtn{
-    background:#ff4d4d;
-    color:white;
-    position:absolute;
-}
-
-.hidden{
-    display:none;
-}
+.hidden{ display:none; }
 
 input{
     width:100%;
@@ -101,7 +84,6 @@ input{
     animation:fall linear infinite;
     opacity:0.8;
     pointer-events:none;
-    z-index:0;
 }
 
 @keyframes fall{
@@ -109,29 +91,28 @@ input{
     to{transform:translateY(110vh);}
 }
 
-/* MUSIC BAR */
+/* music bar */
 .music-bar{
     position:fixed;
     bottom:0;
     left:0;
     width:100%;
-    background:rgba(0,0,0,0.7);
+    background:rgba(0,0,0,0.75);
     backdrop-filter:blur(10px);
     color:white;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:12px 20px;
+    padding:12px 15px;
     z-index:999;
 }
 
 .music-bar button{
     background:#4CAF50;
     border:none;
-    padding:10px 16px;
+    padding:10px 15px;
     border-radius:10px;
     color:white;
-    font-size:16px;
     cursor:pointer;
 }
 </style>
@@ -139,7 +120,7 @@ input{
 
 <body>
 
-<!-- MUSIC PLAYER -->
+<!-- MUSIC -->
 <div class="music-bar">
     <div>
         🎵 <b>Farangis uchun</b><br>
@@ -148,7 +129,7 @@ input{
 
     <button onclick="playMusic()">▶️ Play</button>
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 </div>
@@ -156,9 +137,9 @@ input{
 <!-- PAGE 1 -->
 <div class="card" id="page1">
     <h1>Farangis ❤️</h1>
-    <p>Men seni juda qadrlayman va sen bilan uchrashmoqchiman.</p>
+    <p>Seni juda qadrlayman va uchrashmoqchiman 🥰</p>
 
-    <h2>Uchrashuvga chiqasanmi? 🥰</h2>
+    <h2>Uchrashuvga chiqasanmi?</h2>
 
     <button id="yesBtn">Ha ❤️</button>
     <button id="noBtn">Yo‘q 😅</button>
@@ -177,8 +158,6 @@ input{
 <!-- PAGE 3 -->
 <div class="card hidden" id="page3">
     <h1>Rahmat ❤️</h1>
-    <p>Seni kutaman Farangis 🥰</p>
-
     <p id="meetingInfo"></p>
 </div>
 
@@ -197,18 +176,15 @@ for(let i=0;i<25;i++){
 // NO button move
 const noBtn=document.getElementById("noBtn");
 
-function moveButton(){
-    const maxX=window.innerWidth-120;
-    const maxY=window.innerHeight-60;
-
-    noBtn.style.left=Math.random()*maxX+"px";
-    noBtn.style.top=Math.random()*maxY+"px";
+function moveBtn(){
+    noBtn.style.left=Math.random()*window.innerWidth+"px";
+    noBtn.style.top=Math.random()*window.innerHeight+"px";
 }
 
-noBtn.addEventListener("mouseenter",moveButton);
+noBtn.addEventListener("mouseenter",moveBtn);
 noBtn.addEventListener("touchstart",function(e){
     e.preventDefault();
-    moveButton();
+    moveBtn();
 });
 
 // YES
@@ -219,19 +195,23 @@ document.getElementById("yesBtn").addEventListener("click",function(){
 
 // finish
 function finish(){
-    const date=document.getElementById("date").value;
-    const time=document.getElementById("time").value;
+    const d=document.getElementById("date").value;
+    const t=document.getElementById("time").value;
 
     document.getElementById("page2").classList.add("hidden");
     document.getElementById("page3").classList.remove("hidden");
 
     document.getElementById("meetingInfo").innerHTML=
-    `Uchrashuv: <b>${date}</b> soat <b>${time}</b> ❤️`;
+    `Uchrashuv: <b>${d}</b> soat <b>${t}</b> ❤️`;
 }
 
-// MUSIC
+// MUSIC FIX (ENG MUHIM)
 function playMusic(){
-    document.getElementById("bgMusic").play();
+    const music=document.getElementById("bgMusic");
+
+    music.play().catch(()=>{
+        alert("Musicni yoqish uchun yana 1 marta bosing ❤️");
+    });
 }
 
 </script>
